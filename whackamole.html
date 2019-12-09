@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Whackamole</title>
+    <style media="screen">
+
+      body{
+        background : url(http://sfwallpaper.com/images/game-background-images-12.jpg) no-repeat center fixed;
+        background-size: cover;
+      }
+      .circles{
+        display: inline-block;
+        border: 1px solid green
+      }
+      .box-class{
+        border: 1px solid black;
+        padding: 5px;
+        font-size: 20px;
+        border-radius: 50%;
+        display: inline-block;
+        position:absolute;
+        margin:0;
+        background-color: green;
+        height: 100px
+        width: 100px
+      }
+
+      .parent{
+        border: 1px solid blue;
+        height: 300px;
+        width: 700px;
+        overflow: hidden;
+        position:relative;
+        background-color: #fff8cd;
+
+      }
+      .top-left{
+        top:0;
+        left:0;
+      }
+      .top-right{
+        top:0;
+        right:0;
+      }
+      .top-center{
+        top: 0;
+        left: 50%;
+      }
+      .bottom-left{
+        bottom:0;
+        left:0;
+      }
+      .bottom-center{
+        bottom: 0;
+        left: 50%;
+      }
+      .bottom-right{
+        bottom:0;
+        right:0;
+      }
+      .center{
+        top:45%;
+        left:50%
+      }
+      .center-left{
+        left: 0;
+        top: 45%;
+      }
+      .center-right{
+        right: 0;
+        top: 45%;
+      }
+      .border-class{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .buttons-in-game{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 2%;
+        margin-bottom: 2%;
+        flex-direction: row;
+      }
+      .heading{
+        font-style: normal;
+        font-family: sans-serif;
+        display: flex;
+        justify-content: center;
+        margin-bottom: 2%;
+      }
+
+      #results {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 0;
+        height: 0;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background: rgba(255, 255, 255, 0.9);
+        animation: showResults 0.25s linear;
+        animation-fill-mode: forwards;
+        animation-delay: 21s;
+      }
+      .button-1{
+
+      }
+      .count-of-number{
+        display: flex;
+        justify-content: space-around;
+      }
+    </style>
+
+  </head>
+
+  <body>
+
+    <header class="heading">
+      <h2>Whack - A - Mole</h2>
+    </header>
+    <div class="count-of-number" id="">
+      High-Score: <span id="high-score">0</span>
+    </div>
+    <div class="count-of-number" id="score">
+      Score: <span id="score-actual">0</span>
+    </div>
+      <div class="count-of-number" id="">
+        Current score: <span id="counter">60</span>
+      </div>
+
+      <div class="buttons-in-game">
+
+        <button class="button-1" onclick="start()" type="button" name="button" id="start">Start</button>
+        <button class="button-1" onclick="reset_button()" type="button" name="button" id="">Reset</button>
+
+    </div>
+
+
+    <div class="border-class">
+      <div class="parent">
+        <div>
+          <div id="1" class="box-class top-left" onclick="clicked('1')">
+            1
+          </div>
+          <div id="2" class="box-class top-center" onclick="clicked('2')">
+            2
+          </div>
+          <div id="3" class="box-class top-right" onclick="clicked('3')">
+            3
+          </div>
+        </div>
+
+        <div>
+          <div id="4" class="box-class center-left" onclick="clicked('4')">
+            4
+          </div>
+          <div id="5" class="box-class center" onclick="clicked('5')">
+            5
+          </div>
+          <div id="6" class="box-class center-right" onclick="clicked('6')">
+            6
+          </div>
+        </div>
+
+        <div>
+          <div id="7" class="box-class bottom-left" onclick="clicked('7')">
+            7
+          </div>
+          <div id="8" class="box-class bottom-center" onclick="clicked('8')">
+            8
+          </div>
+          <div id="9" class="box-class bottom-right" onclick="clicked('9')">
+            9
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+    <div id="results">
+      <h1>Game Over</h1>
+      <h2>You got <span class="number"></span> moles out of 20!</h2>
+      <h3>Thanks for playing!</h3>
+      <p>Reload the page to play again or press Refresh to play again.</p>
+    </div>
+
+
+
+    <script type="text/javascript">
+    var image = document.createElement('img')
+    image.src = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR0PHz5ViAV_VwKng09-wb9Y6NZr0w1y1LZQ1SYk8oH8y474Qx_'
+    image.style.width="50px"
+    image.style.height="50px"
+    image.style.borderRadius="50%"
+    let time
+    let hs = 0
+    let cs
+    let process
+    let id
+    let myVar = undefined
+    let count = 60
+    let count_score = 0
+
+    function increment(){
+      if(count>0)
+      {
+        count = count - 1
+        var div = document.getElementById('counter')
+        div.innerText = count
+      }
+    }
+    function start_button(){
+      myVar = undefined
+      if(!myVar)
+      {
+        myVar = setInterval(increment, 1000)
+
+      }
+
+    }
+    function reset_button(){
+      clearInterval(myVar)
+      count = 60
+      var div = document.getElementById('counter')
+      div.innerText = count
+    }
+
+
+    function begin(){
+      id = Math.ceil(Math.random() * 9).toString()
+      var plot = document.getElementById(id)
+      plot.appendChild(image)
+      count--
+      var div = document.getElementById('counter')
+      div.innerText = count
+      if(count == 0){
+        clearInterval(process)
+        id = null
+        if(cs > hs){
+            hs = cs
+            document.getElementById('high-score').innerText = hs
+
+        }
+        document.getElementById('start').disabled = false
+      }
+    }
+
+    function start(){
+      process = setInterval(begin,1000);
+      document.getElementById('start').disabled = true
+      count = 60
+      cs = 0
+      document.getElementById('score-actual').innerText = cs
+
+    }
+
+    function clicked(cid){
+      if(cid == id){
+        cs++
+        document.getElementById('score-actual').innerText=cs
+      }
+    }
+
+    </script>
+
+  </body>
+</html>
